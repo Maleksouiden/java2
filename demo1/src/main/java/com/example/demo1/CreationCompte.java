@@ -26,7 +26,6 @@ public class CreationCompte extends Scene {
 
 
         Connection connexion = ConnexionBD.getConnexion();
-        System.out.println("Connexion réussie à la base de données !");
 
         GridPane gridPane = (GridPane) this.getRoot();
         gridPane.setAlignment(Pos.CENTER);
@@ -66,10 +65,21 @@ public class CreationCompte extends Scene {
                 if (resultat > 0) {
                     System.out.println("Compte créé avec succès !");
                     // TODO: Rediriger vers la page de connexion
+
+                    Button backButton = new Button("Retour");
+                    gridPane.add(backButton, 1, 2);
+
+
+// Gestionnaire d'événements pour le bouton de retour
                 }
             } catch (SQLException e) {
                 System.out.println("Erreur lors de la création du compte : " + e.getMessage());
             }
+
+
+
+
+
         });
     }
 }

@@ -15,7 +15,9 @@ public class ConnexionBD {
         if (connexion == null) {
             connexion = DriverManager.getConnection(URL, UTILISATEUR, MOT_DE_PASSE);
         }
+        System.out.println("Connexion réussie à la base de données !");
         return connexion;
+
     }
 
     public static void fermerConnexion() throws SQLException {

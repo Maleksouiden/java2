@@ -20,13 +20,15 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 
+    public static Utilisateur getUtilisateurConnecte() {
+        return null;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         // Connexion à la base de données
         Connection connexion = ConnexionBD.getConnexion();
-        System.out.println("Connexion réussie à la base de données !");
 
 
         // Interface de connexion
@@ -78,7 +80,30 @@ public class Main extends Application {
 
             if (compteExiste) {
                 System.out.println("Connexion réussie !");
-                // TODO: Ouvrir la page d'accueil
+                // Récupération de l'ID utilisateur et de son type
+                try {
+                    PreparedStatement preparedStatement = connexion.prepareStatement("SELECT id, typeuser FROM authentification WHERE adresse = ?");
+                    preparedStatement.setString(1, adresse);
+                    ResultSet resultats = preparedStatement.executeQuery();
+                    if (resultats.next()) {
+                        String idUtilisateur = resultats.getString("id");
+                        String typeUtilisateur = resultats.getString("typeuser");
+
+                        Utilisateur utilisateur = new Utilisateur(idUtilisateur, typeUtilisateur);
+
+                        // Enregistrer l'utilisateur connecté dans une variable statique
+                        Main.setUtilisateurConnecte(utilisateur);
+
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Erreur lors de la récupération de l'ID et du type de l'utilisateur : " + e.getMessage());
+                }
+                // Ouvrir la page d'accueil
+                AffichageMatchs affichageMatchs = new AffichageMatchs();
+                affichageMatchs.initialize();
+                Scene scene = new Scene(affichageMatchs, 600, 400);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             } else {
                 System.out.println("Erreur : adresse email ou mot de passe incorrect.");
             }
@@ -117,4 +142,9 @@ public class Main extends Application {
 // Affichage de la fenêtre
         primaryStage.show();
     }
+
+    private static void setUtilisateurConnecte(Utilisateur utilisateur) {
+    }
+
+
 }

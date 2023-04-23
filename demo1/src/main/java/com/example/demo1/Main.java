@@ -20,9 +20,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 
-    public static Utilisateur getUtilisateurConnecte() {
-        return null;
-    }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -86,13 +84,13 @@ public class Main extends Application {
                     preparedStatement.setString(1, adresse);
                     ResultSet resultats = preparedStatement.executeQuery();
                     if (resultats.next()) {
-                        String idUtilisateur = resultats.getString("id");
-                        String typeUtilisateur = resultats.getString("typeuser");
 
-                        Utilisateur utilisateur = new Utilisateur(idUtilisateur, typeUtilisateur);
+                        UtilisateurConnecte.setUtilisateur(String.valueOf(resultats.getInt("id")),resultats.getString("typeuser"));
+                        System.out.println(UtilisateurConnecte.getId());
 
-                        // Enregistrer l'utilisateur connecté dans une variable statique
-                        Main.setUtilisateurConnecte(utilisateur);
+
+
+
 
                     }
                 } catch (SQLException e) {
@@ -143,8 +141,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private static void setUtilisateurConnecte(Utilisateur utilisateur) {
-    }
+
 
 
 }

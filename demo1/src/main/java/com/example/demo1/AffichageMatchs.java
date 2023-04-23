@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 
@@ -29,7 +30,8 @@ public class AffichageMatchs extends VBox {
     }
 
     public void initialize() {
-        System.out.println("L'utilisateur connecté est : " + getId());
+        String utilisateur = String.valueOf(UtilisateurConnecte.getId());
+        System.out.println("L'utilisateur connecté est : " +utilisateur);
         // Create the table columns
         TableColumn<Match, Integer> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -56,11 +58,9 @@ public class AffichageMatchs extends VBox {
                             Match match = getTableView().getItems().get(getIndex());
 
                             // Réserver le match pour l'utilisateur connecté
-                            Utilisateur utilisateurConnecte = Main.getUtilisateurConnecte();
-                            if (utilisateurConnecte != null) {
-                                utilisateurConnecte.reserverMatch(match);
-                                button.setDisable(true);
-                            }
+
+                            Match.reserverMatch(UtilisateurConnecte.getId());
+                            button.setDisable(true);
                         }
                     });
                 }
@@ -97,9 +97,5 @@ public class AffichageMatchs extends VBox {
 
         // Add the table view to the VBox
         this.getChildren().add(tableView);
-    }
-
-    private Object gettype() {
-        return null;
     }
 }
